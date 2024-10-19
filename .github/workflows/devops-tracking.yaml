@@ -1,0 +1,13 @@
+name: DevOps Tracking
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tracking:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Collect tracking data
+        run: curl -sL https://raw.githubusercontent.com/javanile/devops-tracking/refs/heads/main/bin/devops-tracking > bash -s -- release
