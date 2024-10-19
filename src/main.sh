@@ -1,6 +1,12 @@
 
+module secrets
+
 main() {
 #!/bin/bash
+
+# Esempio di chiamata alla funzione
+process_secrets
+
 
 # Imposta la variabile del file JSON della chiave dell'account di servizio
 PRIVATE_KEY_FILE="${HOME}/.google/service_account.json"  # La chiave JSON scaricata
