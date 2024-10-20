@@ -10,5 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Collect tracking data
+        env:
+          DEVOPS_TRACKING_SECRETS: ${{ secrets.DEVOPS_TRACKING_SECRETS }}
         run: >
           curl -sL https://raw.githubusercontent.com/javanile/devops-tracking/refs/heads/main/bin/devops-tracking -o devops-tracking && bash -x devops-tracking
