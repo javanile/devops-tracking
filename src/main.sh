@@ -41,6 +41,9 @@ ACCESS_TOKEN=$(curl -s --request POST \
   --data "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=$jwt" | jq -r '.access_token')
 
 datetime=$(date +'%F %T')
+monthnum=$(date +"%YM%m")
+weeknum=$(date +"%YW%V")
+daynum=$(date +"%YD%j")
 
 if [ -n "${GITHUB_REPOSITORY}" ]; then
 repository="https://github.com/${GITHUB_REPOSITORY}"
@@ -48,17 +51,20 @@ else
 repository=$(git config --get remote.origin.url && true)
 fi
 
+release=1
+error=0
+
 # Prepara i dati da inserire
 DATA='{
   "range": "'$RANGE'",
   "majorDimension": "ROWS",
   "values": [
-    ["'$datetime'", "'$repository'", "'$event'"]
+    ["'$datetime'", "'$monthnum'", "'$weeknum'", "'$daynum'", "'$repository'", "'$release'", "'$error'"]
   ]
 }'
 
 # Invia la richiesta all'API di Google Sheets per aggiungere una riga
-curl -X POST \
+curl -s -X POST \
   -H "Authorization: Bearer $ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
   -d "$DATA" \
