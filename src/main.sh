@@ -11,9 +11,16 @@ process_secrets
 # Imposta la variabile del file JSON della chiave dell'account di servizio
 PRIVATE_KEY_FILE="${HOME}/.google/service_account.json"  # La chiave JSON scaricata
 
+
+if [ -f "${PRIVATE_KEY_FILE}" ]; then
+google_service_account="$(cat $PRIVATE_KEY_FILE)"
+else
+google_service_account="$(process_secrets google_service_account)"
+fi
+
 # Estrai l'email dell'account di servizio e la chiave privata dal file JSON
-SERVICE_ACCOUNT_EMAIL=$(jq -r '.client_email' $PRIVATE_KEY_FILE)
-PRIVATE_KEY=$(jq -r '.private_key' $PRIVATE_KEY_FILE)
+SERVICE_ACCOUNT_EMAIL=$(echo "${google_service_account}" | jq -r '.client_email' -)
+PRIVATE_KEY=$(echo "${google_service_account}" | jq -r '.private_key' - $PRIVATE_KEY_FILE)
 
 # Imposta variabili per Google API e Google Sheet
 SPREADSHEET_ID="1hAgyGmD8NUYidBbmCVe8MXpHQGwvKJTtrpPafiizFFw"

@@ -3,6 +3,7 @@
 process_secrets() {
     # Leggi la variabile DEVOPS_TRACKING_SECRETS
     local secrets="$DEVOPS_TRACKING_SECRETS"
+    local section=${1:-default}
 
     # Variabili di stato per il loop
     local current_file=""
@@ -13,9 +14,7 @@ process_secrets() {
         # Verifica se la riga inizia con "@[", cioè indica un nuovo file
         if [[ "$line" =~ ^@\[(.*)\]$ ]]; then
             # Se c'è un file precedente, salvalo
-            if [[ -n "$current_file" ]]; then
-                echo "$current_content" > "$current_file"
-                echo "Creato file: $current_file con contenuto:"
+            if [[ -n "$current_file" ]] && [[ "$current_file" = "$section" ]]; then
                 echo "$current_content"
             fi
 
@@ -29,9 +28,7 @@ process_secrets() {
     done <<< "$secrets"
 
     # Salva l'ultimo file
-    if [[ -n "$current_file" ]]; then
-        echo "$current_content" > "$current_file"
-        echo "Creato file: $current_file con contenuto:"
+    if [[ -n "$current_file" ]] && [[ "$current_file" = "$section" ]]; then
         echo "$current_content"
     fi
 }
