@@ -6,7 +6,7 @@ main() {
 
 # Esempio di chiamata alla funzione
 process_secrets
-
+event=$1
 
 # Imposta la variabile del file JSON della chiave dell'account di servizio
 PRIVATE_KEY_FILE="${HOME}/.google/service_account.json"  # La chiave JSON scaricata
@@ -40,12 +40,15 @@ ACCESS_TOKEN=$(curl -s --request POST \
   --header "Content-Type: application/x-www-form-urlencoded" \
   --data "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=$jwt" | jq -r '.access_token')
 
+datetime=$(date +'%F %T')
+repository=$(git config --get remote.origin.url)
+
 # Prepara i dati da inserire
 DATA='{
   "range": "'$RANGE'",
   "majorDimension": "ROWS",
   "values": [
-    ["valore1", "valore2", "valore3"]
+    ["'$datetime'", "'$repository'", "'$event'"]
   ]
 }'
 

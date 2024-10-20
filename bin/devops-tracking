@@ -3,7 +3,7 @@
 # @package: devops-tracking
 # @build_type: bin
 # @build_with: Mush 0.2.0 (2024-03-21)
-# @build_date: 2024-10-20T14:42:50Z
+# @build_date: 2024-10-20T14:47:23Z
 set -e
 use() { return 0; }
 extern() { return 0; }
@@ -20,7 +20,7 @@ main() {
 
 # Esempio di chiamata alla funzione
 process_secrets
-
+event=$1
 
 # Imposta la variabile del file JSON della chiave dell'account di servizio
 PRIVATE_KEY_FILE="${HOME}/.google/service_account.json"  # La chiave JSON scaricata
@@ -54,12 +54,15 @@ ACCESS_TOKEN=$(curl -s --request POST \
   --header "Content-Type: application/x-www-form-urlencoded" \
   --data "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=$jwt" | jq -r '.access_token')
 
+datetime=$(date +'%F %T')
+repository=$(git config --get remote.origin.url)
+
 # Prepara i dati da inserire
 DATA='{
   "range": "'$RANGE'",
   "majorDimension": "ROWS",
   "values": [
-    ["valore1", "valore2", "valore3"]
+    ["'$datetime'", "'$repository'", "'$event'"]
   ]
 }'
 
