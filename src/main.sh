@@ -41,7 +41,12 @@ ACCESS_TOKEN=$(curl -s --request POST \
   --data "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=$jwt" | jq -r '.access_token')
 
 datetime=$(date +'%F %T')
-repository=$(git config --get remote.origin.url)
+
+if [ -n "${GITHUB_REPOSITORY}" ]; then
+repository="https://github.com/${GITHUB_REPOSITORY}"
+else
+repository=$(git config --get remote.origin.url && true)
+fi
 
 # Prepara i dati da inserire
 DATA='{
