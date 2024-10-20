@@ -20,7 +20,7 @@ fi
 
 # Estrai l'email dell'account di servizio e la chiave privata dal file JSON
 SERVICE_ACCOUNT_EMAIL=$(echo "${google_service_account}" | jq -r '.client_email' -)
-PRIVATE_KEY=$(echo "${google_service_account}" | jq -r '.private_key' - $PRIVATE_KEY_FILE)
+PRIVATE_KEY=$(echo "${google_service_account}" | jq -r '.private_key' -)
 
 # Imposta variabili per Google API e Google Sheet
 SPREADSHEET_ID="1hAgyGmD8NUYidBbmCVe8MXpHQGwvKJTtrpPafiizFFw"
