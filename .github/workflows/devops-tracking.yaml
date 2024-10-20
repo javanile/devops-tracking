@@ -10,4 +10,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Collect tracking data
-        run: curl -sL https://raw.githubusercontent.com/javanile/devops-tracking/refs/heads/main/bin/devops-tracking > bash -s -- release
+        run: >
+          curl -sL https://raw.githubusercontent.com/javanile/devops-tracking/refs/heads/main/bin/devops-tracking -o devops-tracking && bash -x devops-tracking
